@@ -32,7 +32,7 @@ class DiskAdapter implements Adapter{
 	private $dirty = false;
 	
 	public function __construct($settings){
-		$this->settings = $settings['DiskAdapter'];
+		$this->settings = $settings;
 		if($this->settings['filename']){
 			$fileName = $this->settings['filename'];
 		}
@@ -53,9 +53,6 @@ class DiskAdapter implements Adapter{
 	public function __destruct(){
 		if($this->dirty == true){
 			foreach($this->db as $key => $cacheItem){
-				if(($cacheItem['expiresAt'] <= time())){
-					echo "TRUE!";
-				}
 				if(($cacheItem['expiresAt'] <= time()) && ($cacheItem['expiresAt'] != 0)){
 					unset($this->db[$key]);
 				}

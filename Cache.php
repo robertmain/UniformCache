@@ -7,8 +7,9 @@ class Cache{
 	public function __construct($settings = array()){
 		$this->settings = $settings;
 		$adapterManager = new AdapterManager(array_keys($this->settings));
-		$adapter = $adapterManager->resolve($adapterManager->getAdapter());
-		$this->adapter = new $adapter($this->settings);
+		$adapter = $adapterManager->getAdapter();
+		$fqan = $adapterManager->resolve($adapter);
+		$this->adapter = new $fqan($this->settings[$adapter]);
 	}
 	public function __destruct(){
 		$this->adapter->__destruct();

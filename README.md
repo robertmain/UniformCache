@@ -46,7 +46,18 @@ An array of settings should be passed into the new instance of ``Cache()`` thus:
 	</pre>	
 1. To set a cache item simply call ``$myCache->set($key, $value, $ttl)`` where ``$key`` is the key used to retrieve the data later, ``$value`` is the data you wish to store and the third paramter(optional) specifies the ttl (or time to live) of the item you wish to store. In other words - setting a ttl of 10 would keep the object for 10 seconds after which it would "expire" and be removed from the cache. To store a Date object for 10 seconds the following syntax would be used: ``$myCache->set('currentDateObject', new Date(), 10);``. After 10 seconds this object would expire and be removed from the cache.
 1. To retrieve an item from the cache simply call ``$myCache->get('currentDateObject');``. In this case, this would return the date object we previously stored in the cache.
-
+###Usage
+<pre>
+	//For file based caching
+	$settings = array(
+		'DiskAdapter'=>array(
+			'filename' => 'foo' //creates a foo.json file in the cache folder
+		)
+	);
+	$uc = new UniformCache\Cache($settings);
+	$uc->set('foo', 'bar', 7200); //Will stay in the cache for 2 hours
+	echo $uc->get('foo'); //Will return "bar" from the cache.
+</pre>
 ---
 ##For Developers:
 
