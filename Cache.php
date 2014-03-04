@@ -14,7 +14,8 @@ class Cache{
 	public function get($key, $generator = false){
 		if(@!$this->adapter->get($key)){
 			if(is_callable($generator)){
-				$this->set($key, $generator()['value'], $generator()['ttl']);
+				$results = $generator();
+				$this->set($key, $results['value'], $results['ttl']);
 				return $this->adapter->get($key);
 			}
 			else{
