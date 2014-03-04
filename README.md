@@ -15,7 +15,8 @@ This module provides a modular, extensible uniform caching interface to most cac
 ###Cache Method Summary:
 
 - ``+ get(String $key, [function $generator])``  
-	**Description:** *Returns the requested object from the cache, unless the item has expired and/or been removed in which case, false should be returned. 
+	**Description:** *Returns the requested object from the cache, unless the item has expired and/or been removed in which case, providing the second parameter has not been provided, false is returned.*  
+	**A node on read-through caching:**  
 	The second (optional) paramter is a generator that can be passed in to supply the data being requested in the event that it is not present in the cache. 
 	This should be done in the following way:*  
 	<pre>
