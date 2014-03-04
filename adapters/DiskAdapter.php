@@ -48,6 +48,7 @@ class DiskAdapter implements Adapter{
 		else{
 			$this->db = json_decode($fileContent, true);
 		}
+
 	}
 
 	public function __destruct(){
@@ -65,11 +66,11 @@ class DiskAdapter implements Adapter{
 		if(($this->db[$key]['expiresAt'] <= time()) && ($this->db[$key]['expiresAt'] != 0)){
 			$this->delete($key);
 		}
-		try{
-			return $this->db[$key]['val'];
-		}
-		catch(Exception $e){
+		if($this->db[$key]['val'] == null){
 			return false;
+		}
+		else{
+			return $this->db[$key]['val'];
 		}
 	}
 
