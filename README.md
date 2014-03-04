@@ -2,7 +2,7 @@
 ##What is it?
 This module provides a modular, extensible uniform caching interface to most caching platforms. This includes(in order of priorty):  
 
-1. Dummy Cache (Coming soon)  
+1. Dummy Cache   
 1. File Cache  
 1. MySQL (Coming soon)  
 1. APC (Coming soon)
@@ -133,3 +133,7 @@ Uniform Cache is a modular and extensible caching framework and as such allows y
 		**Description:** *Returns a boolean indicating whether or not this adapter is currently usable. This behaves somewhat like an on/off switch. An adapter with this set to false will not be loaded. This is also useful to ensure that the MySQL connection is successful before loading the adapter(e.g: connect to MySQL, then have your adapter set this to ``true`` to allow the adapter to load).*  
 		**Returns:** ``boolean``	
 1. Finally, in order to be loaded correctly, your adapter must be in the ``UniformCache`` namespace.
+
+
+#Licence
+GPL. See [LICENCE](https://github.com/robertmain/UniversalCache/blob/master/LICENCE) for more info.
