@@ -58,6 +58,28 @@ An array of settings should be passed into the new instance of ``Cache()`` thus:
 	$uc = new UniformCache\Cache($settings);
 	$uc->set('foo', 'bar', 7200); //Will stay in the cache for 2 hours
 	echo $uc->get('foo'); //Will return "bar" from the cache.
+</pre>  
+
+###Adapter Specific Settings And Format
+<pre>
+$settings = array(
+	'DummyAdapter' => array(),   //Requires no parameters
+	'DiskAdapter' => array(
+		'filename' => 'foo'
+	),
+	'MySQLAdapter' => array(
+		'host' => 'localhost',   //The hostname of your database server
+		'port' => 3306 		     //The port of your database server, if you're not sure then 3306 is usually a good idea.
+		'username' => 'root',    //Your database username. This is the username you use to connect to MySQL
+		'password' => '', 	     //This is the password for your database user
+		'database' => '',	     //This is the name of the database where your cache table is
+		'table' => 'cache'	     //This is the name of your cache table.
+	),
+	'APCAdapter' => array(),     //Not yet implemented
+	'SharedMemoryAdapter' => (), //Not yet implemented 
+	'MemcachedAdapter' => (),	 //Not yet implemented
+	'RedisAdapter' => ()		 //Not yet implemented
+);
 </pre>
 ---  
 
@@ -68,10 +90,9 @@ Uniform Cache is a modular and extensible caching framework and as such allows y
 
 1. Create a new PHP file in the "adapters" folder the name of the file(and the class) should be the title of the caching service you wish to support followed by the word "Adapter". This should be in title case. For example to support Foo you would name both the the class and the file "FooAdapter" and "FooAdapter.php" respectively.  
 1. An interface is provided in the adapters folder named Adapter.interface.php. This should be implemented by your adapter along with all methods contained.  
-
-	**Adapter Interface Method Summary:**  
+	####Adapter Interface Method Summary:   
 	- ``+ get(String $key);``  
-		**Description:** *Returns the requested object from the cache, unless the item has expired and/or been removed in which case, false should be returned.*  
+		**Description:** *Returns the requested object from the cache, unless the item has expired and/or been removed in which case, false should be returned to indicate a cache miss.*  
 		**Returns:** ``Mixed``
 
 	- ``+ set(String $key, Mixed $value, int $ttl);``  
