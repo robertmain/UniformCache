@@ -11,11 +11,19 @@ class Cache{
 		$fqan = $adapterManager->resolve($adapter);
 		$this->adapter = new $fqan($this->settings[$adapter]);
 	}
-	public function __destruct(){
-		$this->adapter->__destruct();
-	}
-	public function get($key){
-		return $this->adapter->get($key);
+	public function get($key, $generator = false){
+		if(@!$this->adapter->get($key)){
+			if(is_callable($generator)){
+				$this->set($key, $generator()['value'], $generator()['ttl']);
+				return $this->adapter->get($key);
+			}
+			else{
+				return false;
+			}
+		}
+		else{
+			return $this->adapter->get($key);
+		}
 	}
 	public function set($key, $value, $ttl=0){
 		$this->adapter->set($key, $value, $ttl);
