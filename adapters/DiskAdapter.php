@@ -6,6 +6,7 @@ class FileWriter{
 
 	public function __construct($fileName){
 		$this->fileName = dirname(__FILE__) . '/cache/' . $fileName . '.json';
+		touch($this->fileName);
 	}
 
 	public function write($data){
@@ -47,7 +48,6 @@ class DiskAdapter implements Adapter{
 		else{
 			$this->db = json_decode($fileContent, true);
 		}
-		var_dump($this->db);
 	}
 
 	public function __destruct(){
