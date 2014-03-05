@@ -20,7 +20,7 @@ This module provides a modular, extensible uniform caching interface to most cac
 	The second (optional) paramter is a generator that can be passed in to supply the data being requested in the event that it is not present in the cache. 
 	This should be done in the following way:*  
 
-	```js
+	```php
 		$settings = array(
 			'DiskAdapter' => array(
 				'filename' => 'cache' //Creates a cache file called "cache.json";
@@ -56,7 +56,7 @@ This module provides a modular, extensible uniform caching interface to most cac
 An array of settings should be passed into the new instance of ``Cache()`` thus:  
 	**NOTE: If the settings for a particular adapter are missing or the array key does not match that of the class and/or file, they will not be passed to the adapter**  
 
-	```js  
+	```php  
 	$settings = array(  
 		'DiskAdapter' => array(  
 			'filename' => 'cache'  //sets the filename of the cachefile.
@@ -68,7 +68,8 @@ An array of settings should be passed into the new instance of ``Cache()`` thus:
 1. To retrieve an item from the cache simply call ``$myCache->get('currentDateObject');``. In this case, this would return the date object we previously stored in the cache.
 
 ###Usage
-```js
+####Simple Caching  
+```php
 	//For file based caching
 	$settings = array(
 		'DiskAdapter'=>array(
@@ -79,7 +80,28 @@ An array of settings should be passed into the new instance of ``Cache()`` thus:
 	$uc->set('foo', 'bar', 7200); //Will stay in the cache for 2 hours
 	echo $uc->get('foo'); //Will return "bar" from the cache.
 ```  
+####Read Through Caching
+When dealing with caching it is desirable to check to make sure the cache has the object before requesting a new copy of it (otherwise, why bother caching?).
+There are a number of ways to do this. One such way would be to simply use the `get` method, check to see if it returns false (indicating a cache miss), and then get the data manually and call the `set()` method.
 
+However, a much better way of handling this problem is to use read through caching. This makes it makes it possible to request an item from the cache and also to provide a function to return that item and store it in the cache
+in the event of a cache miss. This can be done as follows:
+```php
+	$settings = array(
+		'DiskAdapter' => array(
+			'filename' => 'cache';
+		)
+	);
+	$myCache = new UniformCache\Cache($settings);
+	$generator = function(){
+		return array(
+			'value'=> $user,
+			'ttl' => 3600
+		);
+	}
+	echo $myCache->get('userData', $generator);
+```  
+The returned array returned by the generator function must always be in the format shown above.
 ###Adapter Specific Settings And Format
 | Adapter | Option | Description |
 |---------|--------|-------------|
@@ -96,7 +118,7 @@ An array of settings should be passed into the new instance of ``Cache()`` thus:
 
 **A Sample Configuration Array**  
 
-```js
+```php
 $settings = array(
 	'DummyAdapter' => array(),   //Requires no parameters
 	'DiskAdapter' => array(
@@ -111,11 +133,13 @@ $settings = array(
 		'table' => 'cache'	     //This is the name of your cache table.
 	),
 	'APCAdapter' => array(),     //Not yet implemented
-	'SharedMemoryAdapter' => (), //Not yet implemented 
-	'MemcachedAdapter' => (),	 //Not yet implemented
-	'RedisAdapter' => ()		 //Not yet implemented
+	'SharedMemoryAdapter' => array(), //Not yet implemented 
+	'MemcachedAdapter' => array(),	 //Not yet implemented
+	'RedisAdapter' => array()		 //Not yet implemented
 );
 ```
+*Sidenote: Only the configuration section relevant to your preferred caching mechanism is required, the rest are included above purely for documentation purposes. So if you only want to use file based caching, then you only need to include the `DiskAdapter` section of the above.*
+
 ---  
 
 ##For Developers:
