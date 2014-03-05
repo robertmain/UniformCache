@@ -30,7 +30,7 @@ This module provides a modular, extensible uniform caching interface to most cac
 		$generator = function(){
 			return array(
 				'value'=>'TheCacheDoesntHaveMeSoThisFunctionProvidesMeInstead', //Some arbitary value, basically what you want to save to the cache.  
-				'ttl' => 3600 //The ttl of your cached object. This is optional, however ommiting this will result in a cache object that never dies.
+				'ttl' => 3600 //The ttl(time to live) in seconds of your cached object. This is optional, however ommiting this will result in a cache object that never dies.
 			);
 		}
 		echo $myCache->get('ImAskingForSomethingTheCacheDoesntHave', $generator); //Returns "TheCacheDoesntHaveMeSoThisFunctionProvidesMeInstead" as well as saving it to the cache.
