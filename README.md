@@ -19,7 +19,8 @@ This module provides a modular, extensible uniform caching interface to most cac
 	**A node on read-through caching:**  
 	The second (optional) paramter is a generator that can be passed in to supply the data being requested in the event that it is not present in the cache. 
 	This should be done in the following way:*  
-	<pre>
+
+	```js
 		$settings = array(
 			'DiskAdapter' => array(
 				'filename' => 'cache' //Creates a cache file called "cache.json";
@@ -33,7 +34,7 @@ This module provides a modular, extensible uniform caching interface to most cac
 			);
 		}
 		echo $myCache->get('ImAskingForSomethingTheCacheDoesntHave', $generator); //Returns "TheCacheDoesntHaveMeSoThisFunctionProvidesMeInstead" as well as saving it to the cache.
-	</pre>  
+	```  
 	**Returns:** ``Mixed``  
 
 - ``+ set(String $key, Mixed $value, int $ttl)``  
@@ -53,20 +54,21 @@ This module provides a modular, extensible uniform caching interface to most cac
 1. Include Cache.php (e.g: ``include dirname(__FILE__) . './lib/Cache.php';``)
 1. Create a new instance of Cache.php, passing in an array of adapter settings with the name of the adapter you wish to use as the key.  
 An array of settings should be passed into the new instance of ``Cache()`` thus:  
-	**NOTE: If the settings for a particular adapter are missing or the array key does not match that of the class and/or file, they will not be passed to the adapter**
-	<pre>
+	**NOTE: If the settings for a particular adapter are missing or the array key does not match that of the class and/or file, they will not be passed to the adapter**  
+
+	```js  
 	$settings = array(  
 		'DiskAdapter' => array(  
 			'filename' => 'cache'  //sets the filename of the cachefile.
 		)  
 	);
 	$myCache = new UniformCache\Cache($settings);
-	</pre>	
+	```
 1. To set a cache item simply call ``$myCache->set($key, $value, $ttl)`` where ``$key`` is the key used to retrieve the data later, ``$value`` is the data you wish to store and the third paramter(optional) specifies the ttl (or time to live) of the item you wish to store. In other words - setting a ttl of 10 would keep the object for 10 seconds after which it would "expire" and be removed from the cache. To store a Date object for 10 seconds the following syntax would be used: ``$myCache->set('currentDateObject', new Date(), 10);``. After 10 seconds this object would expire and be removed from the cache.
 1. To retrieve an item from the cache simply call ``$myCache->get('currentDateObject');``. In this case, this would return the date object we previously stored in the cache.
 
 ###Usage
-<pre>
+```js
 	//For file based caching
 	$settings = array(
 		'DiskAdapter'=>array(
@@ -76,10 +78,25 @@ An array of settings should be passed into the new instance of ``Cache()`` thus:
 	$uc = new UniformCache\Cache($settings);
 	$uc->set('foo', 'bar', 7200); //Will stay in the cache for 2 hours
 	echo $uc->get('foo'); //Will return "bar" from the cache.
-</pre>  
+```  
 
 ###Adapter Specific Settings And Format
-<pre>
+| Adapter | Option | Description |
+|---------|--------|-------------|
+| **Dummy Adapter**|`n/a`| No options are requires for this adapter|
+| **File Adapter** |||
+|				   | `filename` | Specifies the name to give the cache file. It is important to note that .json is appended to the file name, therefore there is no need to provide an extension |
+| **MySQL Adapter**|||
+|                  | `host` | The hostname of the MySQL server you want to connect to |
+|                  | `port` | The port that MySQL is running on, if you're not sure, just leave it at 3306 |
+|                  | `username` | The username to use to connect to MySQL. |
+|                  | `password` | Your MySQL password |
+|                  | `database` | The database you wish to connect to. |
+|                  | `table` | The name of the table you want to store your cache objects in |
+
+**A Sample Configuration Array**  
+
+```js
 $settings = array(
 	'DummyAdapter' => array(),   //Requires no parameters
 	'DiskAdapter' => array(
@@ -98,7 +115,7 @@ $settings = array(
 	'MemcachedAdapter' => (),	 //Not yet implemented
 	'RedisAdapter' => ()		 //Not yet implemented
 );
-</pre>
+```
 ---  
 
 ##For Developers:
