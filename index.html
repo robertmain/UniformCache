@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Uniformcache by robertmain</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Uniformcache</h1>
+        <h2>A universal cache for PHP which aims to provide a modular, extensible and perhaps most importantly consistent interface to as many caching solutions as possible in PHP.</h2>
+        <a href="https://github.com/robertmain/UniformCache" class="button"><small>View project on</small>GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>
+<a name="uniform-cache" class="anchor" href="#uniform-cache"><span class="octicon octicon-link"></span></a>Uniform Cache</h1>
+
+<h2>
+<a name="what-is-it" class="anchor" href="#what-is-it"><span class="octicon octicon-link"></span></a>What is it?</h2>
+
+<p>This module provides a modular, extensible uniform caching interface to most caching platforms. This includes(in order of priorty):  </p>
+
+<ol>
+<li>Dummy Cache<br>
+</li>
+<li>File Cache<br>
+</li>
+<li>MySQL (Coming soon)<br>
+</li>
+<li>APC (Coming soon)</li>
+<li>Shared Memory (Coming soon)<br>
+</li>
+<li>Memcached (Coming soon)<br>
+</li>
+<li>Redis (Coming soon)<br>
+</li>
+</ol><hr><h2>
+<a name="for-users" class="anchor" href="#for-users"><span class="octicon octicon-link"></span></a>For Users:</h2>
+
+<h3>
+<a name="cache-method-summary" class="anchor" href="#cache-method-summary"><span class="octicon octicon-link"></span></a>Cache Method Summary:</h3>
+
+<ul>
+<li>
+<p><code>+ get(String $key, [function $generator])</code><br><strong>Description:</strong> <em>Returns the requested object from the cache, unless the item has expired and/or been removed in which case, providing the second parameter has not been provided, false is returned.</em><br><strong>A node on read-through caching:</strong><br>
+The second (optional) paramter is a generator that can be passed in to supply the data being requested in the event that it is not present in the cache. 
+This should be done in the following way:*  </p>
+
+<div class="highlight highlight-php"><pre>    <span class="nv">$settings</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+        <span class="s1">'DiskAdapter'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+            <span class="s1">'filename'</span> <span class="o">=&gt;</span> <span class="s1">'cache'</span> <span class="c1">//Creates a cache file called "cache.json";</span>
+        <span class="p">)</span>
+    <span class="p">);</span>
+    <span class="nv">$myCache</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">UniformCache\Cache</span><span class="p">(</span><span class="nv">$settings</span><span class="p">);</span>
+    <span class="nv">$generator</span> <span class="o">=</span> <span class="k">function</span><span class="p">(){</span>
+        <span class="k">return</span> <span class="k">array</span><span class="p">(</span>
+            <span class="s1">'value'</span><span class="o">=&gt;</span><span class="s1">'TheCacheDoesntHaveMeSoThisFunctionProvidesMeInstead'</span><span class="p">,</span> <span class="c1">//Some arbitary value, basically what you want to save to the cache.  </span>
+            <span class="s1">'ttl'</span> <span class="o">=&gt;</span> <span class="mi">3600</span> <span class="c1">//The ttl of your cached object. This is optional, however ommiting this will result in a cache object that never dies.</span>
+        <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">echo</span> <span class="nv">$myCache</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'ImAskingForSomethingTheCacheDoesntHave'</span><span class="p">,</span> <span class="nv">$generator</span><span class="p">);</span> <span class="c1">//Returns "TheCacheDoesntHaveMeSoThisFunctionProvidesMeInstead" as well as saving it to the cache.</span>
+</pre></div>
+
+<p><strong>Returns:</strong> <code>Mixed</code>  </p>
+</li>
+<li><p><code>+ set(String $key, Mixed $value, int $ttl)</code><br><strong>Description:</strong> <em>Stores an item (specified by <code>$value</code>) in the cache under the key supplied by <code>$key</code> and (optionally) to expire after the number of seconds specified by <code>$ttl</code></em><br><strong>Returns:</strong> <code>void</code></p></li>
+<li><p><code>+ delete(String $key)</code><br><strong>Description:</strong> <em>Removes the item from the cache specified by <code>$key</code>.</em><br><strong>Returns:</strong>  <code>void</code></p></li>
+<li><p><code>+ purge(void)</code><br><strong>Description:</strong> <em>Completely empties the cache.</em><br><strong>Returns:</strong> <code>void</code>  </p></li>
+</ul><h3>
+<a name="how-to" class="anchor" href="#how-to"><span class="octicon octicon-link"></span></a>How-To:</h3>
+
+<ol>
+<li>Extract this library to your project folder.</li>
+<li>Include Cache.php (e.g: <code>include dirname(__FILE__) . './lib/Cache.php';</code>)</li>
+<li>
+<p>Create a new instance of Cache.php, passing in an array of adapter settings with the name of the adapter you wish to use as the key.<br>
+An array of settings should be passed into the new instance of <code>Cache()</code> thus:<br><strong>NOTE: If the settings for a particular adapter are missing or the array key does not match that of the class and/or file, they will not be passed to the adapter</strong>  </p>
+
+<div class="highlight highlight-php"><pre><span class="nv">$settings</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>  
+    <span class="s1">'DiskAdapter'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>  
+        <span class="s1">'filename'</span> <span class="o">=&gt;</span> <span class="s1">'cache'</span>  <span class="c1">//sets the filename of the cachefile.</span>
+    <span class="p">)</span>  
+<span class="p">);</span>
+<span class="nv">$myCache</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">UniformCache\Cache</span><span class="p">(</span><span class="nv">$settings</span><span class="p">);</span>
+</pre></div>
+</li>
+<li>To set a cache item simply call <code>$myCache-&gt;set($key, $value, $ttl)</code> where <code>$key</code> is the key used to retrieve the data later, <code>$value</code> is the data you wish to store and the third paramter(optional) specifies the ttl (or time to live) of the item you wish to store. In other words - setting a ttl of 10 would keep the object for 10 seconds after which it would "expire" and be removed from the cache. To store a Date object for 10 seconds the following syntax would be used: <code>$myCache-&gt;set('currentDateObject', new Date(), 10);</code>. After 10 seconds this object would expire and be removed from the cache.</li>
+<li>To retrieve an item from the cache simply call <code>$myCache-&gt;get('currentDateObject');</code>. In this case, this would return the date object we previously stored in the cache.</li>
+</ol><h3>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h3>
+
+<h4>
+<a name="simple-caching" class="anchor" href="#simple-caching"><span class="octicon octicon-link"></span></a>Simple Caching</h4>
+
+<div class="highlight highlight-php"><pre>    <span class="c1">//For file based caching</span>
+    <span class="nv">$settings</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+        <span class="s1">'DiskAdapter'</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
+            <span class="s1">'filename'</span> <span class="o">=&gt;</span> <span class="s1">'foo'</span> <span class="c1">//creates a foo.json file in the cache folder</span>
+        <span class="p">)</span>
+    <span class="p">);</span>
+    <span class="nv">$uc</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">UniformCache\Cache</span><span class="p">(</span><span class="nv">$settings</span><span class="p">);</span>
+    <span class="nv">$uc</span><span class="o">-&gt;</span><span class="na">set</span><span class="p">(</span><span class="s1">'foo'</span><span class="p">,</span> <span class="s1">'bar'</span><span class="p">,</span> <span class="mi">7200</span><span class="p">);</span> <span class="c1">//Will stay in the cache for 2 hours</span>
+    <span class="k">echo</span> <span class="nv">$uc</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'foo'</span><span class="p">);</span> <span class="c1">//Will return "bar" from the cache.</span>
+</pre></div>
+
+<h4>
+<a name="read-through-caching" class="anchor" href="#read-through-caching"><span class="octicon octicon-link"></span></a>Read Through Caching</h4>
+
+<p>When dealing with caching it is desirable to check to make sure the cache has the object before requesting a new copy of it (otherwise, why bother caching?).
+There are a number of ways to do this. One such way would be to simply use the <code>get</code> method, check to see if it returns false (indicating a cache miss), and then get the data manually and call the <code>set()</code> method.</p>
+
+<p>However, a much better way of handling this problem is to use read through caching. This makes it makes it possible to request an item from the cache and also to provide a function to return that item and store it in the cache
+in the event of a cache miss. This can be done as follows:</p>
+
+<div class="highlight highlight-php"><pre>    <span class="nv">$settings</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+        <span class="s1">'DiskAdapter'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+            <span class="s1">'filename'</span> <span class="o">=&gt;</span> <span class="s1">'cache'</span><span class="p">;</span>
+        <span class="p">)</span>
+    <span class="p">);</span>
+    <span class="nv">$myCache</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">UniformCache\Cache</span><span class="p">(</span><span class="nv">$settings</span><span class="p">);</span>
+    <span class="nv">$generator</span> <span class="o">=</span> <span class="k">function</span><span class="p">(){</span>
+        <span class="k">return</span> <span class="k">array</span><span class="p">(</span>
+            <span class="s1">'value'</span><span class="o">=&gt;</span> <span class="nv">$user</span><span class="p">,</span>
+            <span class="s1">'ttl'</span> <span class="o">=&gt;</span> <span class="mi">3600</span>
+        <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">echo</span> <span class="nv">$myCache</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'userData'</span><span class="p">,</span> <span class="nv">$generator</span><span class="p">);</span>
+</pre></div>
+
+<p>The returned array returned by the generator function must always be in the format shown above.</p>
+
+<h3>
+<a name="adapter-specific-settings-and-format" class="anchor" href="#adapter-specific-settings-and-format"><span class="octicon octicon-link"></span></a>Adapter Specific Settings And Format</h3>
+
+<table>
+<thead><tr>
+<th>Adapter</th>
+<th>Option</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><strong>Dummy Adapter</strong></td>
+<td><code>n/a</code></td>
+<td>No options are requires for this adapter</td>
+</tr>
+<tr>
+<td><strong>File Adapter</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><code>filename</code></td>
+<td>Specifies the name to give the cache file. It is important to note that .json is appended to the file name, therefore there is no need to provide an extension</td>
+</tr>
+<tr>
+<td><strong>MySQL Adapter</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><code>host</code></td>
+<td>The hostname of the MySQL server you want to connect to</td>
+</tr>
+<tr>
+<td></td>
+<td><code>port</code></td>
+<td>The port that MySQL is running on, if you're not sure, just leave it at 3306</td>
+</tr>
+<tr>
+<td></td>
+<td><code>username</code></td>
+<td>The username to use to connect to MySQL.</td>
+</tr>
+<tr>
+<td></td>
+<td><code>password</code></td>
+<td>Your MySQL password</td>
+</tr>
+<tr>
+<td></td>
+<td><code>database</code></td>
+<td>The database you wish to connect to.</td>
+</tr>
+<tr>
+<td></td>
+<td><code>table</code></td>
+<td>The name of the table you want to store your cache objects in</td>
+</tr>
+</tbody>
+</table><p><strong>A Sample Configuration Array</strong>  </p>
+
+<div class="highlight highlight-php"><pre><span class="nv">$settings</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+    <span class="s1">'DummyAdapter'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>   <span class="c1">//Requires no parameters</span>
+    <span class="s1">'DiskAdapter'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+        <span class="s1">'filename'</span> <span class="o">=&gt;</span> <span class="s1">'foo'</span>
+    <span class="p">),</span>
+    <span class="s1">'MySQLAdapter'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+        <span class="s1">'host'</span> <span class="o">=&gt;</span> <span class="s1">'localhost'</span><span class="p">,</span>   <span class="c1">//The hostname of your database server</span>
+        <span class="s1">'port'</span> <span class="o">=&gt;</span> <span class="mi">3306</span>           <span class="c1">//The port of your database server, if you're not sure then 3306 is usually a good idea.</span>
+        <span class="s1">'username'</span> <span class="o">=&gt;</span> <span class="s1">'root'</span><span class="p">,</span>    <span class="c1">//Your database username. This is the username you use to connect to MySQL</span>
+        <span class="s1">'password'</span> <span class="o">=&gt;</span> <span class="s1">''</span><span class="p">,</span>        <span class="c1">//This is the password for your database user</span>
+        <span class="s1">'database'</span> <span class="o">=&gt;</span> <span class="s1">''</span><span class="p">,</span>        <span class="c1">//This is the name of the database where your cache table is</span>
+        <span class="s1">'table'</span> <span class="o">=&gt;</span> <span class="s1">'cache'</span>       <span class="c1">//This is the name of your cache table.</span>
+    <span class="p">),</span>
+    <span class="s1">'APCAdapter'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>     <span class="c1">//Not yet implemented</span>
+    <span class="s1">'SharedMemoryAdapter'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span> <span class="c1">//Not yet implemented </span>
+    <span class="s1">'MemcachedAdapter'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>   <span class="c1">//Not yet implemented</span>
+    <span class="s1">'RedisAdapter'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">()</span>        <span class="c1">//Not yet implemented</span>
+<span class="p">);</span>
+</pre></div>
+
+<p><em>Sidenote: Only the configuration section relevant to your preferred caching mechanism is required, the rest are included above purely for documentation purposes. So if you only want to use file based caching, then you only need to include the <code>DiskAdapter</code> section of the above.</em></p>
+
+<hr><h2>
+<a name="for-developers" class="anchor" href="#for-developers"><span class="octicon octicon-link"></span></a>For Developers:</h2>
+
+<h3>
+<a name="writing-your-own-adapter" class="anchor" href="#writing-your-own-adapter"><span class="octicon octicon-link"></span></a>Writing Your Own Adapter</h3>
+
+<p>Uniform Cache is a modular and extensible caching framework and as such allows you to write your own adapters to support whatever caching methods you see fit.</p>
+
+<ol>
+<li>Create a new PHP file in the "adapters" folder the name of the file(and the class) should be the title of the caching service you wish to support followed by the word "Adapter". This should be in title case. For example to support Foo you would name both the the class and the file "FooAdapter" and "FooAdapter.php" respectively.<br>
+</li>
+<li>
+<p>An interface is provided in the adapters folder named Adapter.interface.php. This should be implemented by your adapter along with all methods contained.  </p>
+
+<h4>
+<a name="adapter-interface-method-summary" class="anchor" href="#adapter-interface-method-summary"><span class="octicon octicon-link"></span></a>Adapter Interface Method Summary:</h4>
+
+<ul>
+<li><p><code>+ get(String $key);</code><br><strong>Description:</strong> <em>Returns the requested object from the cache, unless the item has expired and/or been removed in which case, false should be returned to indicate a cache miss.</em><br><strong>Returns:</strong> <code>Mixed</code></p></li>
+<li><p><code>+ set(String $key, Mixed $value, int $ttl);</code><br><strong>Description:</strong> <em>Stores an item (specified by <code>$value</code>) in the cache under the key supplied by <code>$key</code> and (optionally) to expire after the number of seconds specified by <code>$ttl</code></em><br><strong>Returns:</strong> <code>void</code></p></li>
+<li><p><code>+ delete(String $key);</code><br><strong>Description:</strong> <em>Removes the item from the cache specified by <code>$key</code>.</em><br><strong>Returns:</strong> <code>void</code>  </p></li>
+<li><p><code>+ purge();</code><br><strong>Description:</strong> <em>Completely empties the cache.</em><br><strong>Returns:</strong> <code>void</code></p></li>
+<li><p><code>+</code> <code>getPriority</code><code>();</code><br><strong>Description:</strong> <em>Returns an integer denoting priorty of the adapter in question. This determines the order in which adapters are loaded and used. The first available adapter with the highest priorty is loaded by default. Therefore an adapter with a priority of 6 will be loaded in preference to an adapter with a priority of 5. This is to allow for fallback behaviour (e.g. When MySQL is unavailable fall back to file based caching)</em><br><strong>Returns:</strong> <code>int</code></p></li>
+<li><p><code>+</code> <code>usable</code><code>();</code><br><strong>Description:</strong> <em>Returns a boolean indicating whether or not this adapter is currently usable. This behaves somewhat like an on/off switch. An adapter with this set to false will not be loaded. This is also useful to ensure that the MySQL connection is successful before loading the adapter(e.g: connect to MySQL, then have your adapter set this to <code>true</code> to allow the adapter to load).</em><br><strong>Returns:</strong> <code>boolean</code>    </p></li>
+</ul>
+</li>
+</ol><ol>
+<li>Finally, in order to be loaded correctly, your adapter must be in the <code>UniformCache</code> namespace.</li>
+</ol><h1>
+<a name="licence" class="anchor" href="#licence"><span class="octicon octicon-link"></span></a>Licence</h1>
+
+<p>GPL. See <a href="https://github.com/robertmain/UniversalCache/blob/master/LICENCE">LICENCE</a> for more info.</p>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/robertmain/UniformCache/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/robertmain/UniformCache/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/robertmain/UniformCache"></a> is maintained by <a href="https://github.com/robertmain">robertmain</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
