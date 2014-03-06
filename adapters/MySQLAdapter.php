@@ -187,10 +187,18 @@ class MySQLAdapter implements Adapter{
 		}
 	}
 	public function get($key){
-		return json_decode($this->db->query("SELECT * FROM " . $this->config['database'] . "." . $this->config['table'] . " WHERE `key` = ? ", $key)->fetch_assoc()['value'], true);
+		$result = $this->db->query("SELECT * FROM " . $this->config['database'] . "." . $this->config['table'] . " WHERE `key` = ? ", $key)->fetch_assoc();
+		if(($result['expiresAt'] <= time()) && ($result['expiresAt'] != 0)){
+			$this->delete($key);
+			return false;
+		}
+		else{
+			return $result['value'];
+		}
 	}
 	public function set($key, $value, $ttl){
 		$value = json_encode($value);
+		$ttl = time() + $ttl;
 		$this->db->query("INSERT INTO " . $this->config['database'] . '.' . $this->config['table'] . " (`key`, `value`, `expiresAt`) VALUES(?, ?, ?)", $key, $value, $ttl);
 	}
 	public function delete($key){
