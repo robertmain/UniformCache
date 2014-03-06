@@ -1,6 +1,16 @@
 <?php
 namespace UniformCache;
 use Exception;
+	/*
+		Usage:
+		$db = new MySQL_DB("localhost",3306,"root","","stuff");
+		$q = $db->query("SELECT * FROM table WHERE column = ?",$val);
+		$results = Array();
+		while($r = $q->fetch_assoc()){
+			$results[] = $r;
+		}
+	*/
+
 class MySQL_DB {
 	private $user;
 	private $pass;
@@ -26,9 +36,10 @@ class MySQL_DB {
 	}
 	
 	private function getLink(){
-		if(!isset($this->links[$this->getLinkKey()]))
+		if(!isset(self::$links[$this->getLinkKey()])){	
 			$this->createLink();
-		return $this->links[$this->getLinkKey()];
+		}
+		return self::$links[$this->getLinkKey()];
 	}
 	
 	public function escape($text){
@@ -40,7 +51,7 @@ class MySQL_DB {
 		if(mysqli_connect_error()){
 			die("Error ".mysqli_connect_errno());
 		}
-		$this->links[$this->getLinkKey()] = $link;
+		self::$links[$this->getLinkKey()] = $link;
 		mysqli_set_charset($link,"utf8");
 	}
 	
@@ -96,15 +107,6 @@ class MySQL_DB {
 	
 	public function insertID(){
 		return $this->insertID;
-	}
-
-	public function tableExists($table){
-		$query = "SELECT COUNT(*) FROM information_schema.tables WHERE TABLE_NAME = 'test." . $table ."'";
-		$statement = @mysqli_prepare($this->getLink(),$query);
-		var_dump(mysqli_stmt_execute($statement));
-		if(mysqli_stmt_execute($statement)){
-			return new MySQL_Result($statement);
-		}
 	}
 }
 	
@@ -175,38 +177,30 @@ class MySQL_Result{
 }
 
 class MySQLAdapter implements Adapter{
+	private $config;
 	private $db;
-	private $table;
 	public function __construct($settings){
-		$this->table = $settings['table'];
-		if($this->db = new MySQL_DB($settings['hostname'], $settings['port'], $settings['username'], $settings['password'], $settings['database'])){
-			if(!$res = $this->db->tableExists($this->table)){
-				echo "TABLE DOES NOT EXIST!";
-			}
-			else{
-				var_dump($this->db->tableExists($this->table));
-			}
+		$this->config = $settings;
+		$this->db = new MySQL_DB($this->config['hostname'], $this->config['port'], $this->config['username'], $this->config['password'], $this->config['database']);
+		if(!$this->db->query("SELECT COUNT(*) as `0` FROM information_schema.TABLES WHERE `TABLE_NAME` = 'cache' ")->fetch_assoc()[0]){
+			$this->db->query("CREATE TABLE IF NOT EXISTS `" . $this->config['table'] . "` (`key` varchar(255) NOT NULL,`value` longtext,`expiresAt` varchar(255) NOT NULL, PRIMARY KEY (`key`));");
 		}
 	}
 	public function get($key){
-		$query = $this->db->query("SELECT * FROM " . $this->table . " WHERE `key` = ?", $key);
-		$results = array();
-		while($result = $query->fetch_assoc()){
-			$results[] =$result;
-		}
-		return json_decode($result[0]);
+		return json_decode($this->db->query("SELECT * FROM " . $this->config['database'] . "." . $this->config['table'] . " WHERE `key` = ? ", $key)->fetch_assoc()['value'], true);
 	}
 	public function set($key, $value, $ttl){
-
+		$value = json_encode($value);
+		$this->db->query("INSERT INTO " . $this->config['database'] . '.' . $this->config['table'] . " (`key`, `value`, `expiresAt`) VALUES(?, ?, ?)", $key, $value, $ttl);
 	}
 	public function delete($key){
-
+		$this->db->query("DELETE FROM " . $this->config['database'] . '.' . $this->config['table'] . " WHERE `key` = ?", $key);
 	}
 	public function purge(){
-
+		$this->db->query("TRUNCATE " . $this->config['table']);
 	}
 	public static function getPriority(){
-		return 1;
+		return 3;
 	}
 	public static function usable(){
 		return true;
