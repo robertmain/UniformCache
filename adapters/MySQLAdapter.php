@@ -1,15 +1,6 @@
 <?php
 namespace UniformCache;
 use Exception;
-	/*
-		Usage:
-		$db = new MySQL_DB("localhost",3306,"root","","stuff");
-		$q = $db->query("SELECT * FROM table WHERE column = ?",$val);
-		$results = Array();
-		while($r = $q->fetch_assoc()){
-			$results[] = $r;
-		}
-	*/
 
 class MySQL_DB {
 	private $user;
