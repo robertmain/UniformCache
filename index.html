@@ -1,34 +1,37 @@
 <!DOCTYPE html>
 <html>
+
   <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Uniformcache : A universal cache for PHP which aims to provide a modular, extensible and perhaps most importantly consistent interface to as many caching solutions as possible in PHP." />
 
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
 
-    <title>Uniformcache by robertmain</title>
+    <title>Uniformcache</title>
   </head>
 
   <body>
-    <header>
-      <div class="inner">
-        <h1>Uniformcache</h1>
-        <h2>A universal cache for PHP which aims to provide a modular, extensible and perhaps most importantly consistent interface to as many caching solutions as possible in PHP.</h2>
-        <a href="https://github.com/robertmain/UniformCache" class="button"><small>View project on</small>GitHub</a>
-      </div>
-    </header>
 
-    <div id="content-wrapper">
-      <div class="inner clearfix">
-        <section id="main-content">
-          <h1>
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/robertmain/UniformCache">View on GitHub</a>
+
+          <h1 id="project_title">Uniformcache</h1>
+          <h2 id="project_tagline">A universal cache for PHP which aims to provide a modular, extensible and perhaps most importantly consistent interface to as many caching solutions as possible in PHP.</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/robertmain/UniformCache/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/robertmain/UniformCache/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
 <a name="uniform-cache" class="anchor" href="#uniform-cache"><span class="octicon octicon-link"></span></a>Uniform Cache</h1>
 
 <h2>
@@ -41,9 +44,9 @@
 </li>
 <li>File Cache<br>
 </li>
-<li>MySQL (Coming soon)<br>
+<li>MySQL<br>
 </li>
-<li>APC (Coming soon)</li>
+<li>APC (Beta)</li>
 <li>Shared Memory (Coming soon)<br>
 </li>
 <li>Memcached (Coming soon)<br>
@@ -58,9 +61,8 @@
 
 <ul>
 <li>
-<p><code>+ get(String $key, [function $generator])</code><br><strong>Description:</strong> <em>Returns the requested object from the cache, unless the item has expired and/or been removed in which case, providing the second parameter has not been provided, false is returned.</em><br><strong>A node on read-through caching:</strong><br>
-The second (optional) paramter is a generator that can be passed in to supply the data being requested in the event that it is not present in the cache. 
-This should be done in the following way:*  </p>
+<p><code>+ get(String $key, [function $generator])</code><br><strong>Description:</strong> <em>Returns the requested object from the cache, unless the item has expired and/or been removed in which case, providing the second parameter has not been provided, false is returned.</em><br><strong>A node on read-through caching:</strong><br><em>The second (optional) paramter is a generator that can be passed in to supply the data being requested in the event that it is not present in the cache. 
+This should be done in the following way:</em>  </p>
 
 <div class="highlight highlight-php"><pre>    <span class="nv">$settings</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
         <span class="s1">'DiskAdapter'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
@@ -71,7 +73,7 @@ This should be done in the following way:*  </p>
     <span class="nv">$generator</span> <span class="o">=</span> <span class="k">function</span><span class="p">(){</span>
         <span class="k">return</span> <span class="k">array</span><span class="p">(</span>
             <span class="s1">'value'</span><span class="o">=&gt;</span><span class="s1">'TheCacheDoesntHaveMeSoThisFunctionProvidesMeInstead'</span><span class="p">,</span> <span class="c1">//Some arbitary value, basically what you want to save to the cache.  </span>
-            <span class="s1">'ttl'</span> <span class="o">=&gt;</span> <span class="mi">3600</span> <span class="c1">//The ttl of your cached object. This is optional, however ommiting this will result in a cache object that never dies.</span>
+            <span class="s1">'ttl'</span> <span class="o">=&gt;</span> <span class="mi">3600</span> <span class="c1">//The ttl(time to live) in seconds of your cached object. This is optional, however ommiting this will result in a cache object that never dies.</span>
         <span class="p">);</span>
     <span class="p">}</span>
     <span class="k">echo</span> <span class="nv">$myCache</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'ImAskingForSomethingTheCacheDoesntHave'</span><span class="p">,</span> <span class="nv">$generator</span><span class="p">);</span> <span class="c1">//Returns "TheCacheDoesntHaveMeSoThisFunctionProvidesMeInstead" as well as saving it to the cache.</span>
@@ -158,7 +160,7 @@ in the event of a cache miss. This can be done as follows:</p>
 <tr>
 <td><strong>Dummy Adapter</strong></td>
 <td><code>n/a</code></td>
-<td>No options are requires for this adapter</td>
+<td>No options are required for this adapter</td>
 </tr>
 <tr>
 <td><strong>File Adapter</strong></td>
@@ -206,10 +208,9 @@ in the event of a cache miss. This can be done as follows:</p>
 <td>The name of the table you want to store your cache objects in</td>
 </tr>
 </tbody>
-</table><p><strong>A Sample Configuration Array</strong>  </p>
+</table><p><strong>A Sample Configuration Array</strong><br><em>This example will attempt to connect to MySQL and fall back to the DiskAdapter if MySQL is unavailable for some reason</em></p>
 
 <div class="highlight highlight-php"><pre><span class="nv">$settings</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
-    <span class="s1">'DummyAdapter'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>   <span class="c1">//Requires no parameters</span>
     <span class="s1">'DiskAdapter'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
         <span class="s1">'filename'</span> <span class="o">=&gt;</span> <span class="s1">'foo'</span>
     <span class="p">),</span>
@@ -262,23 +263,18 @@ in the event of a cache miss. This can be done as follows:</p>
 <a name="licence" class="anchor" href="#licence"><span class="octicon octicon-link"></span></a>Licence</h1>
 
 <p>GPL. See <a href="https://github.com/robertmain/UniversalCache/blob/master/LICENCE">LICENCE</a> for more info.</p>
-        </section>
-
-        <aside id="sidebar">
-          <a href="https://github.com/robertmain/UniformCache/zipball/master" class="button">
-            <small>Download</small>
-            .zip file
-          </a>
-          <a href="https://github.com/robertmain/UniformCache/tarball/master" class="button">
-            <small>Download</small>
-            .tar.gz file
-          </a>
-
-          <p class="repo-owner"><a href="https://github.com/robertmain/UniformCache"></a> is maintained by <a href="https://github.com/robertmain">robertmain</a>.</p>
-        </aside>
-      </div>
+      </section>
     </div>
 
-  
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Uniformcache maintained by <a href="https://github.com/robertmain">robertmain</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
   </body>
 </html>
