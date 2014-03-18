@@ -5,6 +5,7 @@ class Cache{
 	private $adapter;
 	private $settings;
 	public function __construct($settings = array()){
+		$settings['DummyAdapter'] = array();
 		$this->settings = $settings;
 		$adapterManager = new AdapterManager(array_keys($this->settings));
 		$adapter = $adapterManager->getAdapter();
