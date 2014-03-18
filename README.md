@@ -5,7 +5,7 @@ This module provides a modular, extensible uniform caching interface to most cac
 1. Dummy Cache   
 1. File Cache  
 1. MySQL  
-1. APC (Coming soon)
+1. APC (Beta)
 1. Shared Memory (Coming soon)  
 1. Memcached (Coming soon)  
 1. Redis (Coming soon)  
@@ -17,7 +17,7 @@ This module provides a modular, extensible uniform caching interface to most cac
 - ``+ get(String $key, [function $generator])``  
 	**Description:** *Returns the requested object from the cache, unless the item has expired and/or been removed in which case, providing the second parameter has not been provided, false is returned.*  
 	**A node on read-through caching:**  
-	The second (optional) paramter is a generator that can be passed in to supply the data being requested in the event that it is not present in the cache. 
+	*The second (optional) paramter is a generator that can be passed in to supply the data being requested in the event that it is not present in the cache. 
 	This should be done in the following way:*  
 
 	```php
@@ -105,7 +105,7 @@ The returned array returned by the generator function must always be in the form
 ###Adapter Specific Settings And Format
 | Adapter | Option | Description |
 |---------|--------|-------------|
-| **Dummy Adapter**|`n/a`| No options are requires for this adapter|
+| **Dummy Adapter**|`n/a`| No options are required for this adapter|
 | **File Adapter** |||
 |				   | `filename` | Specifies the name to give the cache file. It is important to note that .json is appended to the file name, therefore there is no need to provide an extension |
 | **MySQL Adapter**|||
@@ -117,10 +117,9 @@ The returned array returned by the generator function must always be in the form
 |                  | `table` | The name of the table you want to store your cache objects in |
 
 **A Sample Configuration Array**  
-
+*This example will attempt to connect to MySQL and fall back to the DiskAdapter if MySQL is unavailable for some reason*
 ```php
 $settings = array(
-	'DummyAdapter' => array(),   //Requires no parameters
 	'DiskAdapter' => array(
 		'filename' => 'foo'
 	),
