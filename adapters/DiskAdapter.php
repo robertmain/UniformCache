@@ -75,13 +75,10 @@ class DiskAdapter implements Adapter{
 	}
 
 	public function set($key, $value, $ttl){
-		if($ttl == 0){
-			$expiresAt = 0;
+		if($ttl != 0){
+			$ttl = time() + $ttl;
 		}
-		else{
-			$expiresAt = time() + $ttl;
-		}
-		$this->db[$key] = array('val' => $value, 'expiresAt' => $expiresAt);
+		$this->db[$key] = array('val' => $value, 'expiresAt' => $ttl);
 		$this->dirty = true;
 	}
 

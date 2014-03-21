@@ -1,6 +1,6 @@
 <?php
 namespace UniformCache;
-
+require_once('Adapter.interface.php');
 class DummyAdapter implements Adapter{
 	public function get($key){
 		return false;

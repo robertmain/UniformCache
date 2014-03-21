@@ -23,7 +23,7 @@ class APCAdapter implements Adapter{
 	}
 	public function purge(){
 		foreach(new \APCIterator('user', '#^' . $this->settings['prefix'] . '#', APC_ITER_KEY) as $entry) {
-		    apc_delete($entry);
+		    apc_delete($entry); //We can't use $this->delete() because the prefix is appended to the key in the method.
 		}
 	}
 	public static function getPriority(){
