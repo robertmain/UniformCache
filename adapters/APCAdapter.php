@@ -1,5 +1,7 @@
 <?php
 namespace UniformCache;
+use APCIterator;
+use Exception;
 require('Adapter.interface.php');
 class APCAdapter implements Adapter{
 	private $settings;
@@ -11,19 +13,18 @@ class APCAdapter implements Adapter{
 		$this->settings['prefix'] = $this->settings['prefix'] . '_';
 	}
 	public function get($key){
-		error_reporting(E_ALL ^ E_NOTICE);
-		$result = \apc_fetch($this->settings['prefix'] . $key);
-		var_dump(error_get_last());
-		return $result;
+		return json_decode(\apc_fetch($this->settings['prefix'] . $key), true);
 	}
 	public function set($key, $value, $ttl){
-		apc_store($this->settings['prefix'] . $key, $value, $ttl);
+		apc_store($this->settings['prefix'] . $key, json_encode($value), $ttl);
 	}
 	public function delete($key){
 		apc_delete($this->settings['prefix'] . $key);
 	}
 	public function purge(){
-
+		foreach(new \APCIterator('user', '#^' . $this->settings['prefix'] . '#', APC_ITER_KEY) as $entry) {
+		    apc_delete($entry);
+		}
 	}
 	public static function getPriority(){
 		return 4;
