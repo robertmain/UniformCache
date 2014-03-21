@@ -2,13 +2,13 @@
 ##What is it?
 This module provides a modular, extensible uniform caching interface to most caching platforms. This includes(in order of priorty):  
 
-1. Dummy Cache   
+1. Dummy Cache
 1. File Cache  
-1. MySQL  
-1. APC (Beta)
+1. MySQL
+1. APC
 1. Shared Memory (Coming soon)  
 1. Memcached (Coming soon)  
-1. Redis (Coming soon)  
+1. Redis (Coming soon)
 
 ---
 ##For Users:
