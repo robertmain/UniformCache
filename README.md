@@ -115,6 +115,8 @@ The returned array returned by the generator function must always be in the form
 |                  | `password` | Your MySQL password |
 |                  | `database` | The database you wish to connect to. |
 |                  | `table` | The name of the table you want to store your cache objects in |
+| **APC Adapter ** | ||
+|                  | `prefix`(optional) | The prefix to use for cached objects. This is to ensure that your cached objects don't stand on anyone else's toes. This is particularly good for shared hosting. If no prefix is specified this defaults to "UniformCache". However, the prefix is only used internally e.g: call `$cache->get('Foo');` rather than `$cache->get('UniformCache_Foo')`. |
 
 **A Sample Configuration Array**  
 *This example will attempt to connect to MySQL and fall back to the DiskAdapter if MySQL is unavailable for some reason*
@@ -131,7 +133,9 @@ $settings = array(
 		'database' => '',	     //This is the name of the database where your cache table is
 		'table' => 'cache'	     //This is the name of your cache table.
 	),
-	'APCAdapter' => array(),     //Not yet implemented
+	'APCAdapter' => array(
+		'prefix' => 'MyCache' //This is the prefix you want to use to prevent your cache objects from conflicting with other objects in the cache. This is particularly good on shared hosting.
+	),
 	'SharedMemoryAdapter' => array(), //Not yet implemented 
 	'MemcachedAdapter' => array(),	 //Not yet implemented
 	'RedisAdapter' => array()		 //Not yet implemented
