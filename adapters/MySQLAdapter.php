@@ -1,7 +1,7 @@
 <?php
 namespace UniformCache;
 use Exception;
-
+require_once('Adapter.interface.php');
 class MySQL_DB {
 	private $user;
 	private $pass;
@@ -184,13 +184,15 @@ class MySQLAdapter implements Adapter{
 			return false;
 		}
 		else{
-			return $result['value'];
+			return json_decode($result['value'], true);
 		}
 	}
 	public function set($key, $value, $ttl){
 		$value = json_encode($value);
-		$ttl = time() + $ttl;
-		$this->db->query("INSERT INTO " . $this->config['database'] . '.' . $this->config['table'] . " (`key`, `value`, `expiresAt`) VALUES(?, ?, ?)", $key, $value, $ttl);
+		if($ttl != 0){
+			$ttl = time() + $ttl;
+		}
+		$this->db->query("INSERT INTO " . $this->config['database'] . '.' . $this->config['table'] . " (`key`, `value`, `expiresAt`) VALUES(?, ?, ?) ON DUPLICATE KEY UPDATE `value` = VALUES(`value`), `expiresAt` = VALUES(`expiresAt`)", $key, $value, $ttl);
 	}
 	public function delete($key){
 		$this->db->query("DELETE FROM " . $this->config['database'] . '.' . $this->config['table'] . " WHERE `key` = ?", $key);
