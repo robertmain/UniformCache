@@ -2,7 +2,7 @@
 namespace UniformCache;
 use APCIterator;
 use Exception;
-require('Adapter.interface.php');
+require_once('Adapter.interface.php');
 class APCAdapter implements Adapter{
 	private $settings;
 	public function __construct($settings){
