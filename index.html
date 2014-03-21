@@ -201,6 +201,17 @@ in the event of a cache miss. This can be done as follows:</p>
 <td><code>table</code></td>
 <td>The name of the table you want to store your cache objects in</td>
 </tr>
+<tr>
+<td>**APC Adapter **</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>
+<code>prefix</code>(optional)</td>
+<td>The prefix to use for cached objects. This is to ensure that your cached objects don't stand on anyone else's toes. This is particularly good for shared hosting. If no prefix is specified this defaults to "UniformCache". However, the prefix is only used internally e.g: call <code>$cache-&gt;get('Foo');</code> rather than <code>$cache-&gt;get('UniformCache_Foo')</code>.</td>
+</tr>
 </tbody>
 </table><p><strong>A Sample Configuration Array</strong><br><em>This example will attempt to connect to MySQL and fall back to the DiskAdapter if MySQL is unavailable for some reason</em></p>
 
@@ -216,7 +227,9 @@ in the event of a cache miss. This can be done as follows:</p>
         <span class="s1">'database'</span> <span class="o">=&gt;</span> <span class="s1">''</span><span class="p">,</span>        <span class="c1">//This is the name of the database where your cache table is</span>
         <span class="s1">'table'</span> <span class="o">=&gt;</span> <span class="s1">'cache'</span>       <span class="c1">//This is the name of your cache table.</span>
     <span class="p">),</span>
-    <span class="s1">'APCAdapter'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>     <span class="c1">//Not yet implemented</span>
+    <span class="s1">'APCAdapter'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+        <span class="s1">'prefix'</span> <span class="o">=&gt;</span> <span class="s1">'MyCache'</span> <span class="c1">//This is the prefix you want to use to prevent your cache objects from conflicting with other objects in the cache. This is particularly good on shared hosting.</span>
+    <span class="p">),</span>
     <span class="s1">'SharedMemoryAdapter'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span> <span class="c1">//Not yet implemented </span>
     <span class="s1">'MemcachedAdapter'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>   <span class="c1">//Not yet implemented</span>
     <span class="s1">'RedisAdapter'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">()</span>        <span class="c1">//Not yet implemented</span>
