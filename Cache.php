@@ -1,6 +1,7 @@
 <?php
 namespace UniformCache;
 include(dirname(__FILE__) . '/AdapterManager.php');
+//@todo: Object serialization on get and set
 class Cache{
 	private $adapter;
 	private $settings;
