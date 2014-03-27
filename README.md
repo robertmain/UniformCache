@@ -119,9 +119,9 @@ The returned array returned by the generator function must always be in the form
 |                  | `prefix`(optional) | The prefix to use for cached objects. This is to ensure that your cached objects don't stand on anyone else's toes. This is particularly good for shared hosting. If no prefix is specified this defaults to "UniformCache". However, the prefix is only used internally e.g: call `$cache->get('Foo');` rather than `$cache->get('UniformCache_Foo')`. |
 | **Redis Adapter** |||
 |					| `server` | The hostname or socket path |
-|					| `port` | The port that Redis is running on (6379 by default) |
-|					| `password` | Authenticate the connection using a password |
-|					| `database` | Change the selected database for the connection |
+|					| `port`(optional) | The port that Redis is running on (6379 by default) |
+|					| `password`(optional) | Authenticate the connection using a password |
+|					| `database`(optional) | Change the selected database for the connection |
 
 **A Sample Configuration Array**  
 *This example will attempt to connect to MySQL and fall back to the DiskAdapter if MySQL is unavailable for some reason*
