@@ -8,7 +8,7 @@ This module provides a modular, extensible uniform caching interface to most cac
 1. APC
 1. Shared Memory (Coming soon)  
 1. Memcached (Coming soon)  
-1. Redis (Coming soon)
+1. Redis (Early testing)
 
 ---
 ##For Users:
@@ -115,8 +115,13 @@ The returned array returned by the generator function must always be in the form
 |                  | `password` | Your MySQL password |
 |                  | `database` | The database you wish to connect to. |
 |                  | `table` | The name of the table you want to store your cache objects in |
-| **APC Adapter ** | ||
+| **APC Adapter** | ||
 |                  | `prefix`(optional) | The prefix to use for cached objects. This is to ensure that your cached objects don't stand on anyone else's toes. This is particularly good for shared hosting. If no prefix is specified this defaults to "UniformCache". However, the prefix is only used internally e.g: call `$cache->get('Foo');` rather than `$cache->get('UniformCache_Foo')`. |
+| **Redis Adapter** |||
+|					| `server` | The hostname or socket path |
+|					| `port` | The port that Redis is running on (6379 by default) |
+|					| `password` | Authenticate the connection using a password |
+|					| `database` | Change the selected database for the connection |
 
 **A Sample Configuration Array**  
 *This example will attempt to connect to MySQL and fall back to the DiskAdapter if MySQL is unavailable for some reason*
