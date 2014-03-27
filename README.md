@@ -143,7 +143,9 @@ $settings = array(
 	),
 	'SharedMemoryAdapter' => array(), //Not yet implemented 
 	'MemcachedAdapter' => array(),	 //Not yet implemented
-	'RedisAdapter' => array()		 //Not yet implemented
+	'RedisAdapter' => array(
+		'server' => '/tmp/redis.sock'
+	)
 );
 ```
 *Sidenote: Only the configuration section relevant to your preferred caching mechanism is required, the rest are included above purely for documentation purposes. So if you only want to use file based caching, then you only need to include the `DiskAdapter` section of the above.*
