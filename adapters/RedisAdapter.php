@@ -44,7 +44,7 @@ class RedisAdapter implements Adapter {
 	}
 
 	public static function getPriority(){
-		return 5;
+		return 7;
 	}
 
 	public static function usable(){
