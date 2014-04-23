@@ -163,23 +163,18 @@ Uniform Cache is a modular and extensible caching framework and as such allows y
 	- ``+ get(String $key);``  
 		**Description:** *Returns the requested object from the cache, unless the item has expired and/or been removed in which case, false should be returned to indicate a cache miss.*  
 		**Returns:** ``Mixed``
-
 	- ``+ set(String $key, Mixed $value, int $ttl);``  
 		**Description:** *Stores an item (specified by ``$value``) in the cache under the key supplied by ``$key`` and (optionally) to expire after the number of seconds specified by ``$ttl``*  
 		**Returns:** ``void``
-
 	- ``+ delete(String $key);``  
 		**Description:** *Removes the item from the cache specified by ``$key``.*  
 		**Returns:** ``void``  
-
 	- ``+ purge();``  
 		**Description:** *Completely empties the cache.*  
 		**Returns:** ``void``
-
 	- ``+`` <u>``getPriority``</u>``();``  
 		**Description:** *Returns an integer denoting priorty of the adapter in question. This determines the order in which adapters are loaded and used. The first available adapter with the highest priorty is loaded by default. Therefore an adapter with a priority of 6 will be loaded in preference to an adapter with a priority of 5. This is to allow for fallback behaviour (e.g. When MySQL is unavailable fall back to file based caching)*  
 		**Returns:** ``int``
-
 	- ``+`` <u>``usable``</u>``();``  
 		**Description:** *Returns a boolean indicating whether or not this adapter is currently usable. This behaves somewhat like an on/off switch. An adapter with this set to false will not be loaded. This is also useful to ensure that the MySQL connection is successful before loading the adapter(e.g: connect to MySQL, then have your adapter set this to ``true`` to allow the adapter to load).*  
 		**Returns:** ``boolean``	
