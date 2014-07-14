@@ -1,5 +1,5 @@
 <?php
-namespace UniformCache;
+namespace UniformCache\adapters;
 use APCIterator;
 use Exception;
 require_once('Adapter.interface.php');

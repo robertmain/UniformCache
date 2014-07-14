@@ -1,6 +1,7 @@
 <?php
-namespace UniformCache;
+namespace UniformCache\adapters;
 require_once('Adapter.interface.php');
+require_once('./vendor/autoload.php');
 class FileWriter{
 	private $fileName;
 
@@ -63,18 +64,20 @@ class DiskAdapter implements Adapter{
 	}
 
 	public function get($key){
-		if(($this->db[$key]['expiresAt'] <= time()) && ($this->db[$key]['expiresAt'] != 0)){
-			$this->delete($key);
-		}
-		if($this->db[$key]['val'] == null){
-			return false;
+		if(isset($this->db[$key])){
+			if(($this->db[$key]['expiresAt'] <= time()) && ($this->db[$key]['expiresAt'] != 0)){
+				$this->delete($key);
+			}
+			else{
+				return $this->db[$key]['val'];
+			}
 		}
 		else{
-			return $this->db[$key]['val'];
+			return false;
 		}
 	}
 
-	public function set($key, $value, $ttl){
+	public function set($key, $value, $ttl=0){
 		if($ttl != 0){
 			$ttl = time() + $ttl;
 		}

@@ -1,17 +1,12 @@
 <?php
 namespace UniformCache;
+require_once('./vendor/autoload.php');
 include(dirname(__FILE__) . '/AdapterManager.php');
-//@todo: Object serialization on get and set
 class Cache{
 	private $adapter;
-	private $settings;
 	public function __construct($settings = array()){
-		$settings['DummyAdapter'] = array();
-		$this->settings = $settings;
-		$adapterManager = new AdapterManager(array_keys($this->settings));
-		$adapter = $adapterManager->getAdapter();
-		$fqan = $adapterManager->resolve($adapter);
-		$this->adapter = new $fqan($this->settings[$adapter]);
+		$adapterManager = new AdapterManager($settings);
+		$this->adapter = $adapterManager->getAdapter();
 	}
 	public function get($key, $generator = false){
 		if(@!$this->adapter->get($key)){

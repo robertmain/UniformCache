@@ -1,5 +1,5 @@
 <?php
-namespace UniformCache;
+namespace UniformCache\adapters;
 require_once('Adapter.interface.php');
 class RedisAdapter implements Adapter {
 	private $connection;

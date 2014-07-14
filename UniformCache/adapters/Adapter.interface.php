@@ -1,5 +1,5 @@
 <?php
-namespace UniformCache;
+namespace UniformCache\adapters;
 interface Adapter{
 	public function get($key);
 	public function set($key, $value, $ttl);

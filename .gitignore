@@ -1,2 +1,2 @@
-*.json
-node_modules/
+vendor/
+UniformCache/adapers/cache/*.json

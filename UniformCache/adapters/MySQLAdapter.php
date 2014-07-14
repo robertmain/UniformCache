@@ -1,5 +1,5 @@
 <?php
-namespace UniformCache;
+namespace UniformCache\adapters;
 use Exception;
 require_once('Adapter.interface.php');
 class MySQL_DB {
