@@ -1,4 +1,5 @@
-#Uniform Cache
+#Uniform Cache 
+[![Build Status](https://travis-ci.org/robertmain/UniformCache.svg?branch=master)](https://travis-ci.org/robertmain/UniformCache)
 ##What is it?
 This module provides a modular, extensible uniform caching interface to most caching platforms. This includes(in order of priorty):  
 
