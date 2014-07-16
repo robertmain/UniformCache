@@ -5,7 +5,7 @@ class DummyAdapter implements Adapter{
 	public function get($key){
 		return false;
 	}
-	public function set($key, $value, $ttl){}
+	public function set($key, $value, $ttl=0){}
 	public function delete($key){}
 	public function purge(){}
 	public static function getPriority(){
