@@ -110,7 +110,7 @@ The returned array returned by the generator function must always be in the form
 | **File Adapter** |||
 |				   | `filename` | Specifies the name to give the cache file. It is important to note that .json is appended to the file name, therefore there is no need to provide an extension |
 | **MySQL Adapter**|||
-|                  | `host` | The hostname of the MySQL server you want to connect to |
+|                  | `hostname` | The hostname of the MySQL server you want to connect to |
 |                  | `port` | The port that MySQL is running on, if you're not sure, just leave it at 3306 |
 |                  | `username` | The username to use to connect to MySQL. |
 |                  | `password` | Your MySQL password |

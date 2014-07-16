@@ -173,7 +173,7 @@ class MySQLAdapter implements Adapter{
 	public function __construct($settings){
 		$this->config = $settings;
 		$this->db = new MySQL_DB($this->config['hostname'], $this->config['port'], $this->config['username'], $this->config['password'], $this->config['database']);
-		if(!$this->db->query("SELECT COUNT(*) as `0` FROM information_schema.TABLES WHERE `TABLE_NAME` = 'cache' ")->fetch_assoc()[0]){
+		if(!$this->db->query("SELECT COUNT(*) as `0` FROM information_schema.TABLES WHERE `TABLE_NAME` = '" . $this->config['table'] . "' AND `TABLE_SCHEMA` = '" . $this->config['database'] . "' ")->fetch_assoc()[0]){
 			$this->db->query("CREATE TABLE IF NOT EXISTS `" . $this->config['table'] . "` (`key` varchar(255) NOT NULL,`value` longtext,`expiresAt` varchar(255) NOT NULL, PRIMARY KEY (`key`));");
 		}
 	}
@@ -187,7 +187,7 @@ class MySQLAdapter implements Adapter{
 			return json_decode($result['value'], true);
 		}
 	}
-	public function set($key, $value, $ttl){
+	public function set($key, $value, $ttl=0){
 		$value = json_encode($value);
 		if($ttl != 0){
 			$ttl = time() + $ttl;

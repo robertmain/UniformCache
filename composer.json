@@ -14,5 +14,8 @@
         "psr-4": {
             "UniformCache\\": "UniformCache/"
         }
+    },
+    "require": {
+        "simplon/mysql": "0.3.2"
     }
 }
