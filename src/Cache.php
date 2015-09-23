@@ -54,7 +54,7 @@ class Cache{
 	 * 
 	 * @param mixed $key The key to be used to retrieve the requested data from the cache
 	 * @param callable|null $generator An optional callback function which can be used to provide the required data(and add it to the cache) in the event of a cache miss.
-	 * @return mixed
+	 * @return mixed The data stored in the cache under the key specified by `$key`
 	 */
 	public function get($key, callable $generator = null){
 		if(@!$this->adapter->get($key)){
