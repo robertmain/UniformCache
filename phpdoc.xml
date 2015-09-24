@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <phpdoc>
-	<title>Communique REST Client</title>
+	<title>Uniform Cache</title>
 	<parser>
 		<target>docs</target>
 	</parser>
