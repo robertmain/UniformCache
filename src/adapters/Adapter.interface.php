@@ -60,7 +60,7 @@ interface Adapter{
 	/**
 	 * Purge the cache
 	 *
-	 * Purges the cache completely. On shared resources such as APC or shared memory - a prefix is used when adding items to the cache. This same prefix is then used to avoid collisions when purging(for some reason other users of shared server tend not to like having their cache forcibly purged by another user...)
+	 * Purges the cache completely. On shared resources such as APC or shared memory - a prefix is used when adding items to the cache. This same prefix is then used to avoid collisions when purging(for some reason other users of shared servers tend not to like having their cache forcibly purged by another user...)
 	 */
 	public function purge();
 
@@ -68,6 +68,7 @@ interface Adapter{
 	 * Get Adaper Priorty
 	 *
 	 * Returns the adapter priorty. Certain adapters take priority over others. For example, the DummyAdapter has the highest priorty(1) because it is always available. Higher priority adapters are examined first to determine if they are instanciable.
+	 * @return int The priroty of the current adapter. A lower number has a higher priorty.
 	 */
 	public static function getPriority();
 
@@ -75,6 +76,7 @@ interface Adapter{
 	 * Check If This Adapter Is Usable
 	 *
 	 * Check to see if the adapter is able to be instanciated. Some adapters turn this on and off based on certain conditions. For example, the MySQL adapter might check to see if MySQL is installed and/or enabled and set this to `false` if not. This would prevent UniformCache from trying to instanciate the MySQL adapter.
+	 * @return  boolean Value representing whether or not the adapter can be instanciated
 	 */
 	public static function usable();
 }
