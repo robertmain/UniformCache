@@ -43,6 +43,7 @@ interface Adapter{
 	 * 
 	 * @param mixed $key The key used to store the cache data
 	 * @param mixed $value The cache data
+	 * @param int $ttl The time `$value` should be persisted in the cache for (in seconds).
 	 */
 	public function set($key, $value, $ttl);
 
