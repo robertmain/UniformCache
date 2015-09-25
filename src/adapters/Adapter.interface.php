@@ -19,7 +19,7 @@ namespace UniformCache\adapters;
  * 
  * @author Robert Main
  * @package UniformCache
- * @copyright  Robert Main
+ * @copyright Robert Main
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * 
  */
