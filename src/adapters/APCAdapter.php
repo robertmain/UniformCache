@@ -30,7 +30,8 @@ require_once('Adapter.interface.php');
 class APCAdapter implements Adapter{
 
 	/**
-	 * The settings array provided to the adapter by the adapter manager
+	 * The settings array provided to the adapter by the adapter manager  
+	 * 
 	 * @var array
 	 */
 	private $settings;
@@ -40,7 +41,12 @@ class APCAdapter implements Adapter{
 	 *
 	 * Constructs the APC adapter and stores the provided adapter settings in a private property
 	 *
-	 * @param array $settings An array of adapter settings
+	 * @param array $settings An array of adapter settings in the following format:
+	 * 
+	 * | Key  | Description |
+	 * | ------------- | ------------- |
+	 * | `prefix` (optional) | The prefix you wish to use to prefix cache entries in APC. By default, this defaults to `UniformCache`  |
+	 *
 	 */
 	public function __construct($settings){
 		$this->settings = $settings;

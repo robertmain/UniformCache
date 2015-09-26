@@ -119,7 +119,11 @@ class DiskAdapter implements Adapter{
 	private $fileWriter;
 
 	/**
-	 * The settings required for this adapter
+	 * An array of adapter settings in the following format:
+	 * 
+	 * | Key  | Description |
+	 * | ------------- | ------------- |
+	 * | `filename` (optional) | The filename to use when saving cache data to disk. This defaults to `cache.json`  |
 	 * @var array
 	 */
 	private $settings;
