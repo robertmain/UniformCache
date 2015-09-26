@@ -40,7 +40,14 @@ class RedisAdapter implements Adapter {
 
 	/**
 	 * Constructs the redis adapter and stores the provided settings and a redis instance in private properties
-	 * @param array $settings An array of adapter settings
+	 * @param array $settings An array of adapter settings in the following format:
+	 * 
+	 * | Key  | Description |
+	 * | ------------- | ------------- |
+	 * | `server` | The hostname of the redis server  |
+	 * | `port` | The port redis is running on  |
+	 * | `password` | The password to connect to refis with  |
+	 * | `database` | The redis database to connect to  |
 	 */
 	public function __construct($settings) {
 		$this->settings = $settings;
