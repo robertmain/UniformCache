@@ -39,10 +39,14 @@ class Cache{
 	 * 
 	 * Sets up all the specified adapters so that they can be used later on in the class
 	 * 
-	 * @param array $settings An array of settings to be passed to the relevant adapter(s) as constructor arguments upon instanciation
+	 * @param array $adapters An array of adapters to be passed to the relevant adapter(s) as constructor arguments upon instanciation
 	 */
-	public function __construct($settings = array()){
-		$adapterManager = new AdapterManager($settings);
+	public function __construct(array $adapters = array(), $adapter_manager){
+		if(!$adapter_manager){
+			$adapterManager = new \UniformCache\AdapterManager($adapters);
+		} else {
+			$adapterManager = new $adapter_manager($adapters);
+		}
 		$this->adapter = $adapterManager->getAdapter();
 	}
 
