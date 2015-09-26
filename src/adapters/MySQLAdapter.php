@@ -356,7 +356,16 @@ class MySQLAdapter implements Adapter{
 	 * Constructs the MySQL adapter
 	 *
 	 * Sets up the MySQL adapter by creating the nesecary table (if it doesn't already exist)
-	 * @param array $settings An array of adapter settings
+	 * @param array $settings An array of adapter settings in the following format:
+	 * 
+	 * | Key  | Description |
+	 * | ------------- | ------------- |
+	 * | `hostname` | The hostname of the MySQL server  |
+	 * | `port` (optional) | The port the MySQL server is running on. This defaults to 3306  |
+	 * | `username` | The username to connect to MySQL with  |
+	 * | `password` | The password to connect to MySQL with  |
+	 * | `database` | The database to connect to |
+	 * | `table` | The database table to store cache entries in. If this does not exist, it will be created (provided the accoutn supplied has `CREATE` privaleges).   |
 	 */
 	public function __construct($settings){
 		$this->config = $settings;
