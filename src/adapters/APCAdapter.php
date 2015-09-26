@@ -45,7 +45,7 @@ class APCAdapter implements Adapter{
 	 * 
 	 * | Key  | Description |
 	 * | ------------- | ------------- |
-	 * | `prefix` (optional) | The prefix you wish to use to prefix cache entries in APC. By default, this resorts to UniformCache  |
+	 * | `prefix` (optional) | The prefix you wish to use to prefix cache entries in APC. By default, this defaults to `UniformCache`  |
 	 *
 	 */
 	public function __construct($settings){
