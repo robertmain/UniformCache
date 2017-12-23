@@ -1,7 +1,20 @@
 language: php
 php:
-  - 5.5
-  - 5.4
+  - '7.0'
+  - '5.6'
   - hhvm
 install:
   - composer install
+script:
+  - composer test
+deploy:
+  overwrite: true
+  provider: pages
+  file_glob: true
+  file: docs/*
+  local_dir: docs
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  on:
+    branch: master
+    php: '5.6'
