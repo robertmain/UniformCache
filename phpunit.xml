@@ -7,6 +7,7 @@
          beStrictAboutOutputDuringTests="true"
          beStrictAboutTestsThatDoNotTestAnything="true"
          beStrictAboutTodoAnnotatedTests="true"
+         checkForUnintentionallyCoveredCode="true"
          printerClass="DiabloMedia\PHPUnit\Printer\PrettyPrinter"
          verbose="true">
     <testsuite name="default">
