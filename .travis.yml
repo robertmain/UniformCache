@@ -6,6 +6,7 @@ php:
 install:
   - composer install
 script:
+  - composer lint
   - composer test
 deploy:
   overwrite: true
