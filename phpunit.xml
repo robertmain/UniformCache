@@ -10,7 +10,7 @@
          printerClass="DiabloMedia\PHPUnit\Printer\PrettyPrinter"
          verbose="true">
     <testsuite name="default">
-        <directory suffix="Test.php">test</directory>
+        <directory suffix="Test.php">tests</directory>
     </testsuite>
 
     <filter>
