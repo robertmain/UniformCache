@@ -1,3 +1,5 @@
 vendor/
 UniformCache/adapers/cache/*.json
 docs/
+tests/unit/coverage
+.vscode/
