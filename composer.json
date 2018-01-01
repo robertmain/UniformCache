@@ -12,19 +12,19 @@
         "test:coverage-clover": "@composer test --  --coverage-clover tests/unit/coverage/coverage.xml",
         "test:coverage-text": "@composer test --  --coverage-text",
         "test:coverage-html": "@composer test -- --coverage-html tests/unit/coverage",
-        "lint": "phpcs --standard=psr2 src/ tests/unit/specs/",
+        "lint": "phpcs --standard=psr2 src/",
         "docs": "phpdoc"
     },
     "require": {
-        "php": "^5.6",
-        "simplon/mysql": "0.3.2"
+        "php": ">=7.1",
+        "psr/cache": "^1.0"
     },
     "require-dev": {
         "phpdocumentor/phpdocumentor": "^2.9",
-        "phpunit/phpunit": "5.7.26",
-        "diablomedia/phpunit-pretty-printer": "^1.0",
         "squizlabs/php_codesniffer": "^3.2",
-        "phpunit/php-code-coverage": "^4.0"
+        "limedeck/phpunit-detailed-printer": "^3.1",
+        "phpunit/phpunit": "^6.5",
+        "phpunit/php-code-coverage": "^5.3"
     },
     "autoload": {
         "psr-4": {

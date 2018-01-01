@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/5.7/phpunit.xsd"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/6.5/phpunit.xsd"
          bootstrap="vendor/autoload.php"
          backupGlobals="false"
          beStrictAboutCoversAnnotation="true"
@@ -8,10 +8,11 @@
          beStrictAboutTestsThatDoNotTestAnything="true"
          beStrictAboutTodoAnnotatedTests="true"
          checkForUnintentionallyCoveredCode="true"
-         printerClass="DiabloMedia\PHPUnit\Printer\PrettyPrinter"
-         verbose="true">
+         colors="true"
+         printerClass="LimeDeck\Testing\Printer"
+         verbose="false">
     <testsuite name="default">
-        <directory suffix="Test.php">tests</directory>
+        <directory suffix=".spec.php">tests</directory>
     </testsuite>
 
     <filter>

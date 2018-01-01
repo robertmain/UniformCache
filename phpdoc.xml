@@ -9,5 +9,7 @@
 	</transformer>
 	<files>
 		<directory>src/</directory>
+		<file>vendor/psr/cache/src/CacheItemInterface.php</file>
+		<file>vendor/psr/cache/src/CacheItemPoolInterface.php</file>
 	</files>
 </phpdoc>
