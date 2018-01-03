@@ -40,5 +40,4 @@ abstract class Adapter
      * @return void
      */
     abstract public function set(mixed $key, mixed $value):void;
-
 }
