@@ -1,5 +1,7 @@
 <?php
 
+namespace UniformCache\Test\Unit;
+
 use PHPUnit\Framework\TestCase;
 
 use UniformCache\Cache;

@@ -28,7 +28,8 @@
     },
     "autoload": {
         "psr-4": {
-            "UniformCache\\": "src"
+            "UniformCache\\": "src",
+            "UniformCache\\Test\\Unit\\": "test\\unit\\specs"
         }
     }
 }
