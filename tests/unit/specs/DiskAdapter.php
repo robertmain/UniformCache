@@ -7,10 +7,10 @@ use UniformCache\CacheItem;
 use UniformCache\Adapter;
 
 /**
- * CacheItemPool
+ * DiskAdapter
  *
  */
-class CacheItemPool extends TestCase
+class DiskAdapter extends TestCase
 {
 
     private $adapter;
