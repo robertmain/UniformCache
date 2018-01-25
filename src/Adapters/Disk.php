@@ -30,6 +30,11 @@ class Disk extends Adapter implements CacheItemPoolInterface
      */
     private $cache = [];
 
+    /**
+     * Configures the disk adapter to read and write cache data to the filesystem
+     *
+     * @throws UniformCache\Exceptions\CacheException if the cache file is not valid JSON or unable to be
+     */
     public function __construct(array $config = [])
     {
         parent::__construct();
@@ -47,7 +52,8 @@ class Disk extends Adapter implements CacheItemPoolInterface
             $this->cache       = json_decode($cacheFileContents, true);
 
             if (json_last_error() !== JSON_ERROR_NONE) {
-                throw new CacheException('Unable to parse ' . $this->cacheFilePath . ' - ' . json_last_error_msg(), json_last_error());
+                throw new CacheException('Unable to parse ' . $this->cacheFilePath . ' - ' .
+                                            json_last_error_msg(), json_last_error());
             }
         } else {
             touch($this->cacheFilePath);

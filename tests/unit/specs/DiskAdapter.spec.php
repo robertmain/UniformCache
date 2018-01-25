@@ -9,6 +9,7 @@ use org\bovigo\vfs\vfsStreamFile;
 
 use UniformCache\CacheItem;
 use UniformCache\Adapters\Disk;
+use UniformCache\Exceptions\CacheException;
 
 /**
  * DiskAdapter
@@ -65,5 +66,19 @@ class DiskAdapter extends TestCase
 
         $this->assertInstanceOf(CacheItem::class, $cacheItem);
         $this->assertFalse($cacheItem->isHit());
+    }
+
+    /**
+     * @test
+     */
+    public function cannot_read_an_invalid_cache_file()
+    {
+        $this->expectException(CacheException::class);
+        $this->getExpectedExceptionMessageRegExp('/Unable to parse/');
+
+        $adapter = new Disk([
+            'directory' => vfsStream::url($this->file_system->path()),
+            'fileName'  => 'invalid.json'
+        ]);
     }
 }
