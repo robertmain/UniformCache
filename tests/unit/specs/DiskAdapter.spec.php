@@ -3,10 +3,12 @@
 namespace UniformCache\Test\Unit;
 
 use PHPUnit\Framework\TestCase;
+use org\bovigo\vfs\vfsStream;
+use org\bovigo\vfs\vfsStreamDirectory;
+use org\bovigo\vfs\vfsStreamFile;
 
-use UniformCache\Cache;
 use UniformCache\CacheItem;
-use UniformCache\Adapter;
+use UniformCache\Adapters\Disk;
 
 /**
  * DiskAdapter
@@ -14,34 +16,38 @@ use UniformCache\Adapter;
  */
 class DiskAdapter extends TestCase
 {
+    /**
+     * @var \org\bovigo\vfs\vfsStreamDirectory
+     */
+    private $file_system;
 
-    private $adapter;
+    /**
+     * @var \org\bovigo\vfs\vfsStreamFile
+     */
+    private $cacheFile;
 
     public function setUp()
     {
-        $this->adapter = $this->getMockBuilder(Adapter::class)
-                              ->enableOriginalConstructor()
-                              ->getMockForAbstractClass();
+        $this->file_system = vfsStream::setup('root', null, [
+            'valid.json'   => '[{"key": "my_key", "value": "my_item"}]',
+            'invalid.json' => '{"invalid json": 3'
+        ]);
     }
 
     /**
      * @test
      */
-    public function returns_a_cache_item_representing_the_specified_key()
+    public function returns_a_cache_item_represented_by_the_specified_key()
     {
-        $this->adapter->method('get')
-                      ->willReturnCallback(function () {
-                            $cacheItemGenerator = $this->adapter->createCacheItem;
-                            return [
-                                $cacheItemGenerator('my_key', 'my_item', true),
-                                $cacheItemGenerator('my_key_2', 'my_item_2', true)
-                            ];
-                      });
+        $adapter = new Disk([
+            'directory' => vfsStream::url($this->file_system->path()),
+            'fileName'  => 'valid.json'
+        ]);
 
-        $cache     = new UniformCache\Cache([$this->adapter]);
-        $cacheItem = $cache->getItem('my_key');
+        $cacheItem = $adapter->getItem('my_key');
 
         $this->assertInstanceOf(CacheItem::class, $cacheItem);
+        $this->assertTrue($cacheItem->isHit());
         $this->assertEquals('my_key', $cacheItem->getKey());
         $this->assertEquals('my_item', $cacheItem->get());
     }
