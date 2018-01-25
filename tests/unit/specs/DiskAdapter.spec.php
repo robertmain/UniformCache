@@ -51,4 +51,19 @@ class DiskAdapter extends TestCase
         $this->assertEquals('my_key', $cacheItem->getKey());
         $this->assertEquals('my_item', $cacheItem->get());
     }
+
+    /**
+     * @test
+     */
+    public function returns_a_cache_item_even_in_the_event_of_a_cache_miss()
+    {
+        $adapter = new Disk([
+            'directory' => vfsStream::url($this->file_system->path()),
+            'fileName'  => 'valid.json'
+        ]);
+        $cacheItem = $adapter->getItem('doesntExist');
+
+        $this->assertInstanceOf(CacheItem::class, $cacheItem);
+        $this->assertFalse($cacheItem->isHit());
+    }
 }

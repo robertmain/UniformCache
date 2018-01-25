@@ -61,16 +61,13 @@ class Disk extends Adapter implements CacheItemPoolInterface
     {
         $cacheItem = array_filter($this->cache, function ($item) use ($key) {
             return $item['key'] == $key;
-        })[0];
+        });
 
         if (count($cacheItem) > 0) {
-            $value = $cacheItem['value'];
-            $isHit = true;
+            return ($this->createCacheItem)($key, $cacheItem[0]['value'], true);
         } else {
-            $value = null;
-            $isHit = false;
+            return ($this->createCacheItem)($key, null, false);
         }
-        return ($this->createCacheItem)($key, $value, $isHit);
     }
 
     /**
