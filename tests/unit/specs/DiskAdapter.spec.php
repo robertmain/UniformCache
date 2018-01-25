@@ -10,6 +10,7 @@ use org\bovigo\vfs\vfsStreamFile;
 use UniformCache\CacheItem;
 use UniformCache\Adapters\Disk;
 use UniformCache\Exceptions\CacheException;
+use SebastianBergmann\CodeCoverage\Node\Directory;
 
 /**
  * DiskAdapter
@@ -81,4 +82,21 @@ class DiskAdapter extends TestCase
             'fileName'  => 'invalid.json'
         ]);
     }
+
+    /**
+     * @test
+    */
+    public function creates_a_cache_file_if_one_does_not_exist()
+    {
+        $testDir = vfsStream::url($this->file_system->path() . DIRECTORY_SEPARATOR . 'non-existant directory');
+
+        $adapter = new Disk([
+            'directory' => $testDir,
+            'fileName' => 'auto_generated_cache_file.json'
+        ]);
+
+        $this->assertDirectoryExists($testDir);
+        $this->assertFileExists($testDir . DIRECTORY_SEPARATOR . 'auto_generated_cache_file.json');
+    }
+
 }
