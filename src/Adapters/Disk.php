@@ -36,7 +36,7 @@ class Disk extends Adapter implements CacheItemPoolInterface
      * @param Array $config Configuration for the disk adapter. The `directory` and `fileName` options are both
      *                      required to configure the directory where cache files should be stored.
      *
-     * @throws UniformCache\Exceptions\CacheException if the cache file is not valid JSON or unable to be
+     * @throws UniformCache\Exceptions\CacheException if the cache file is not valid JSON or unable to be read
      */
     public function __construct(array $config = [])
     {
