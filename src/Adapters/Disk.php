@@ -69,6 +69,8 @@ class Disk extends Adapter implements CacheItemPoolInterface
             return $item['key'] == $key;
         });
 
+        $cacheItem = array_values($cacheItem);
+
         if (count($cacheItem) > 0) {
             return ($this->createCacheItem)($key, $cacheItem[0]['value'], true);
         } else {
@@ -81,6 +83,9 @@ class Disk extends Adapter implements CacheItemPoolInterface
      */
     public function getItems(array $keys = []) : array
     {
+        return array_map(function ($key) {
+            return $this->getItem($key);
+        }, $keys);
     }
 
     /**
