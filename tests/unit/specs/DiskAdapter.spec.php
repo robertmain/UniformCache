@@ -106,15 +106,21 @@ class DiskAdapter extends TestCase
     */
     public function creates_a_cache_file_if_one_does_not_exist()
     {
-        $testDir = vfsStream::url($this->file_system->path() . DIRECTORY_SEPARATOR . 'non-existant directory');
+        $testDir  = vfsStream::url($this->file_system->path() . DIRECTORY_SEPARATOR . 'non-existant directory');
+        $testFile = 'auto_generated_cache_file.json';
+
 
         $adapter = new Disk([
             'directory' => $testDir,
-            'fileName' => 'auto_generated_cache_file.json'
+            'fileName' => $testFile
         ]);
 
+
         $this->assertDirectoryExists($testDir);
-        $this->assertFileExists($testDir . DIRECTORY_SEPARATOR . 'auto_generated_cache_file.json');
+
+        $this->assertFileExists($testDir . DIRECTORY_SEPARATOR . $testFile);
+        $this->assertFileIsWritable($testDir . DIRECTORY_SEPARATOR . $testFile);
+        $this->assertFileIsReadable($testDir . DIRECTORY_SEPARATOR . $testFile);
     }
 
 }
