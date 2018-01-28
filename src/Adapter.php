@@ -12,9 +12,22 @@ use UniformCache\Exceptions\InvalidKeyException;
  */
 abstract class Adapter
 {
-    public function __construct()
+    /**
+     * Create Cache Item
+     *
+     * Certain values in {@link CacheItem} cannot be directly set (e.g `value`). Therefore a factory method must
+     * exist for correctly instanciating cache items
+     *
+     * @param String  $key   The unique key to assign to the cache item
+     * @param Mixed   $value The desired value to be cached
+     * @param Boolean $isHit Represents whether or not the the cache request was a hit
+     *
+     * @return CacheItem
+     *
+    */
+    protected static function createCacheItem($key, $value, $isHit)
     {
-        $this->createCacheItem = \Closure::bind(
+        $cacheItemFactory = \Closure::bind(
             function ($key, $value, $isHit) {
                 $item        = new CacheItem();
                 $item->key   = $key;
@@ -25,6 +38,8 @@ abstract class Adapter
             null,
             CacheItem::class
         );
+
+        return $cacheItemFactory($key, $value, $isHit);
     }
 
     /**

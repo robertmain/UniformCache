@@ -40,8 +40,6 @@ class Disk extends Adapter implements CacheItemPoolInterface
      */
     public function __construct(array $config = [])
     {
-        parent::__construct();
-
         $this->config = $config;
 
         $this->cacheFilePath = $this->config['directory'] . DIRECTORY_SEPARATOR . $this->config['fileName'];
@@ -75,9 +73,9 @@ class Disk extends Adapter implements CacheItemPoolInterface
         $cacheItem = array_values($cacheItem);
 
         if (count($cacheItem) > 0) {
-            return ($this->createCacheItem)($key, $cacheItem[0]['value'], true);
+            return Adapter::createCacheItem($key, $cacheItem[0]['value'], true);
         } else {
-            return ($this->createCacheItem)($key, null, false);
+            return Adapter::createCacheItem($key, null, false);
         }
     }
 
