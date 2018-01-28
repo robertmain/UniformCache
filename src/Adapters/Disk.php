@@ -10,7 +10,7 @@ use UniformCache\CacheItem;
 use UniformCache\Exceptions\CacheException;
 
 /**
- * Abstraction of file-system based caching.
+ * Specialisation of {@link Adapter} to provide a filesystem based caching mechanism
  */
 class Disk extends Adapter implements CacheItemPoolInterface
 {
@@ -32,6 +32,9 @@ class Disk extends Adapter implements CacheItemPoolInterface
 
     /**
      * Configures the disk adapter to read and write cache data to the filesystem
+     *
+     * @param Array $config Configuration for the disk adapter. The `directory` and `fileName` options are both
+     *                      required to configure the directory where cache files should be stored.
      *
      * @throws UniformCache\Exceptions\CacheException if the cache file is not valid JSON or unable to be
      */
