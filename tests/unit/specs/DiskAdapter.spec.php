@@ -34,6 +34,11 @@ class DiskAdapter extends TestCase
             'valid.json'   => '[{"key": "my_key", "value": "my_item"}]',
             'invalid.json' => '{"invalid json": 3'
         ]);
+
+        $this->adapter = new Disk([
+            'directory' => vfsStream::url($this->file_system->path()),
+            'fileName'  => 'valid.json'
+        ]);
     }
 
     /**
@@ -41,12 +46,7 @@ class DiskAdapter extends TestCase
      */
     public function returns_a_cache_item_represented_by_the_specified_key()
     {
-        $adapter = new Disk([
-            'directory' => vfsStream::url($this->file_system->path()),
-            'fileName'  => 'valid.json'
-        ]);
-
-        $cacheItem = $adapter->getItem('my_key');
+        $cacheItem = $this->adapter->getItem('my_key');
 
         $this->assertInstanceOf(CacheItem::class, $cacheItem);
         $this->assertTrue($cacheItem->isHit());
@@ -59,11 +59,7 @@ class DiskAdapter extends TestCase
      */
     public function returns_a_cache_item_even_in_the_event_of_a_cache_miss()
     {
-        $adapter = new Disk([
-            'directory' => vfsStream::url($this->file_system->path()),
-            'fileName'  => 'valid.json'
-        ]);
-        $cacheItem = $adapter->getItem('doesntExist');
+        $cacheItem = $this->adapter->getItem('doesntExist');
 
         $this->assertInstanceOf(CacheItem::class, $cacheItem);
         $this->assertFalse($cacheItem->isHit());
