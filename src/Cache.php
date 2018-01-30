@@ -11,7 +11,7 @@ use Psr\Cache\CacheItemInterface;
 class Cache implements CacheItemPoolInterface
 {
     /**
-     * @var \UniformCache\Adapter
+     * @var \UniformCache\Adapter A caching mechanism adapter that can be utilised to store and retrieve cache items
      */
     private $adapter;
 
@@ -49,8 +49,6 @@ class Cache implements CacheItemPoolInterface
 
     /**
      * {@inheritdoc}
-     *
-     * @todo Implement this method
      */
     public function hasItem($key)
     {
@@ -59,8 +57,6 @@ class Cache implements CacheItemPoolInterface
 
     /**
      * {@inheritdoc}
-     *
-     * @todo Implement this method
      */
     public function clear()
     {
@@ -69,8 +65,6 @@ class Cache implements CacheItemPoolInterface
 
     /**
      * {@inheritdoc}
-     *
-     * @todo Implement this method
      */
     public function deleteItem($key)
     {
@@ -79,8 +73,6 @@ class Cache implements CacheItemPoolInterface
 
     /**
      * {@inheritdoc}
-     *
-     * @todo Implement this method
      */
     public function deleteItems(array $keys)
     {
@@ -89,8 +81,6 @@ class Cache implements CacheItemPoolInterface
 
     /**
      * {@inheritdoc}
-     *
-     * @todo Implement this method
      */
     public function save(CacheItemInterface $item)
     {
@@ -99,8 +89,6 @@ class Cache implements CacheItemPoolInterface
 
     /**
      * {@inheritdoc}
-     *
-     * @todo Implement this method
      */
     public function saveDeferred(CacheItemInterface $item)
     {
@@ -109,8 +97,6 @@ class Cache implements CacheItemPoolInterface
 
     /**
      * {@inheritdoc}
-     *
-     * @todo Implement this method
      */
     public function commit()
     {
