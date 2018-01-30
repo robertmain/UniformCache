@@ -89,6 +89,34 @@ class DiskAdapter extends TestCase
 
     /**
      * @test
+    */
+    public function returns_a_cache_item_for_every_key_requested_including_cache_misses()
+    {
+        $cacheItems = $this->adapter->getItems(['my_key', 'imnotinthecache', 'meeither']);
+
+        $this->assertCount(3, $cacheItems);
+
+        $firstCacheItem = $cacheItems[0];
+        $this->assertInstanceOf(CacheItem::class, $firstCacheItem);
+        $this->assertEquals($firstCacheItem->getKey(), 'my_key');
+        $this->assertEquals($firstCacheItem->get(), 'my_item');
+        $this->assertTrue($firstCacheItem->isHit());
+
+        $secondCacheItem = $cacheItems[1];
+        $this->assertInstanceOf(CacheItem::class, $secondCacheItem);
+        $this->assertEquals($secondCacheItem->getKey(), 'imnotinthecache');
+        $this->assertEquals($secondCacheItem->get(), null);
+        $this->assertFalse($secondCacheItem->isHit());
+
+        $thirdCacheItem = $cacheItems[2];
+        $this->assertInstanceOf(CacheItem::class, $thirdCacheItem);
+        $this->assertEquals($thirdCacheItem->getKey(), 'meeither');
+        $this->assertEquals($thirdCacheItem->get(), null);
+        $this->assertFalse($thirdCacheItem->isHit());
+    }
+
+    /**
+     * @test
      */
     public function cannot_read_an_invalid_cache_file()
     {
@@ -99,6 +127,14 @@ class DiskAdapter extends TestCase
             'directory' => vfsStream::url($this->file_system->path()),
             'fileName'  => 'invalid.json'
         ]);
+    }
+
+    /**
+     * @test
+    */
+    public function persists_cache_data_to_disk()
+    {
+        $this->markTestSkipped(); // We'll come back to this later...
     }
 
     /**
@@ -122,5 +158,4 @@ class DiskAdapter extends TestCase
         $this->assertFileIsWritable($testDir . DIRECTORY_SEPARATOR . $testFile);
         $this->assertFileIsReadable($testDir . DIRECTORY_SEPARATOR . $testFile);
     }
-
 }
