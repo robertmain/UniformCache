@@ -11,8 +11,10 @@ install:
   - composer update
 script:
   - composer lint
-  - composer test
+  - composer test:coverage-clover
   - composer docs
+after_success:
+  - bash <(curl -s https://codecov.io/bash) -f test/unit/coverage/coverage.xml
 deploy:
   overwrite: true
   provider: pages
