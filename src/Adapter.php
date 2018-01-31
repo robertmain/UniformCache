@@ -42,7 +42,4 @@ abstract class Adapter
         return $cacheItemFactory($key, $value, $isHit);
     }
 
-    /**
-     *
-     */
 }
